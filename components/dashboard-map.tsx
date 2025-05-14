@@ -185,7 +185,7 @@ export default function DashboardMap() {
     <div
       ref={mapContainerRef}
       style={{ width: "100%", height: "500px" }}
-      className="rounded-lg shadow-md"
+      className="rounded-lg shadow-md z-10"
     />
   );
 }

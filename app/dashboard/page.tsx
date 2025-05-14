@@ -21,7 +21,7 @@ export default function Dashboard() {
     <div className="flex flex-col min-h-screen">
       <DashboardNavbar />
 
-      <main className="flex-1 w-full py-6 px-4 md:px-6">
+      <main className="flex-1 w-full py-10 px-8 md:px-12 lg:px-16 xl:px-20">
         <div className="flex flex-col gap-6">
           <div className="flex flex-col md:flex-row justify-between gap-4">
             <div>
@@ -47,10 +47,10 @@ export default function Dashboard() {
           <div className="grid gap-6 md:grid-cols-3">
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
+                <CardTitle className="text-xl font-semibold">
                   Total Laporan
                 </CardTitle>
-                <FileText className="h-4 w-4 text-muted-foreground" />
+                <FileText className="h-6 w-6 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">12</div>
@@ -61,10 +61,10 @@ export default function Dashboard() {
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
+                <CardTitle className="text-xl font-semibold">
                   Match Ditemukan
                 </CardTitle>
-                <FileText className="h-4 w-4 text-muted-foreground" />
+                <FileText className="h-6 w-6 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">3</div>
@@ -75,10 +75,10 @@ export default function Dashboard() {
             </Card>
             <Card>
               <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-                <CardTitle className="text-sm font-medium">
+                <CardTitle className="text-xl font-semibold">
                   Menunggu Konfirmasi
                 </CardTitle>
-                <FileText className="h-4 w-4 text-muted-foreground" />
+                <FileText className="h-6 w-6 text-muted-foreground" />
               </CardHeader>
               <CardContent>
                 <div className="text-2xl font-bold">2</div>
@@ -97,7 +97,7 @@ export default function Dashboard() {
                   Visualisasi lokasi barang hilang dan temuan
                 </CardDescription>
               </CardHeader>
-              <CardContent className="p-0">
+              <CardContent className="px-6">
                 <div className="h-[400px] rounded-md overflow-hidden">
                   <DashboardMap />
                 </div>
@@ -130,7 +130,7 @@ export default function Dashboard() {
               <CardFooter>
                 <Link
                   href="/matches"
-                  className="text-sm text-primary hover:underline"
+                  className="text-sm text-primary hover:underline underline-offset-2"
                 >
                   Lihat semua match
                 </Link>
@@ -148,9 +148,15 @@ export default function Dashboard() {
             <CardContent>
               <Tabs defaultValue="all">
                 <TabsList className="mb-4">
-                  <TabsTrigger value="all">Semua</TabsTrigger>
-                  <TabsTrigger value="lost">Barang Hilang</TabsTrigger>
-                  <TabsTrigger value="found">Barang Temuan</TabsTrigger>
+                  <TabsTrigger value="all" className="cursor-pointer">
+                    Semua
+                  </TabsTrigger>
+                  <TabsTrigger value="lost" className="cursor-pointer">
+                    Barang Hilang
+                  </TabsTrigger>
+                  <TabsTrigger value="found" className="cursor-pointer">
+                    Barang Temuan
+                  </TabsTrigger>
                 </TabsList>
                 <TabsContent value="all">
                   <RecentItemsList type="all" />
@@ -166,7 +172,7 @@ export default function Dashboard() {
             <CardFooter>
               <Link
                 href="/reports"
-                className="text-sm text-primary hover:underline"
+                className="text-sm text-primary hover:underline underline-offset-2"
               >
                 Lihat semua laporan
               </Link>

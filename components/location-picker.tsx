@@ -3,14 +3,12 @@
 import { useState, useEffect, useRef } from "react";
 import dynamic from "next/dynamic";
 
-// Props for our location picker
 type LocationPickerProps = {
   initialPosition: { lat: number; lng: number };
   onLocationSelect: (lat: number, lng: number, address: string) => void;
   height?: string;
 };
 
-// Core map component (will be dynamically imported)
 const MapComponent = ({
   initialPosition,
   onLocationSelect,
@@ -20,7 +18,6 @@ const MapComponent = ({
   const mapInstanceRef = useRef<any>(null);
   const [isMapInitialized, setIsMapInitialized] = useState(false);
 
-  // Function to add Leaflet CSS once
   const addLeafletCSS = () => {
     if (document.getElementById("leaflet-css")) return;
 
@@ -31,9 +28,7 @@ const MapComponent = ({
     document.head.appendChild(link);
   };
 
-  // Initialize the map
   useEffect(() => {
-    // Check if we're in the browser
     if (
       typeof window === "undefined" ||
       !mapContainerRef.current ||
@@ -46,15 +41,22 @@ const MapComponent = ({
 
     const initializeMap = async () => {
       try {
-        // Dynamic import of Leaflet
         const L = await import("leaflet");
 
-        // Add CSS
         addLeafletCSS();
 
-        // Create map only if it doesn't exist yet
+        delete L.Icon.Default.prototype._getIconUrl;
+
+        L.Icon.Default.mergeOptions({
+          iconRetinaUrl:
+            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
+          iconUrl:
+            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
+          shadowUrl:
+            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
+        });
+
         if (!mapInstanceRef.current && mapContainerRef.current) {
-          // Create map instance
           const map = L.map(mapContainerRef.current).setView(
             [initialPosition.lat, initialPosition.lng],
             13
@@ -62,58 +64,66 @@ const MapComponent = ({
 
           mapInstanceRef.current = map;
 
-          // Add tile layer
           L.tileLayer("https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png", {
             attribution:
               '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors',
             maxZoom: 19,
           }).addTo(map);
 
-          // Create marker
           const marker = L.marker([initialPosition.lat, initialPosition.lng], {
             draggable: true,
           }).addTo(map);
 
-          // Handle marker drag
-          marker.on("dragend", () => {
+          const getAddress = async (lat: number, lng: number) => {
+            try {
+              const res = await fetch(
+                `https://nominatim.openstreetmap.org/reverse?format=json&lat=${lat}&lon=${lng}&accept-language=id`
+              );
+              const data = await res.json();
+              const area =
+                data.address?.suburb ||
+                data.address?.village ||
+                data.address?.town ||
+                data.address?.city ||
+                data.address?.county ||
+                data.address?.state ||
+                "daerah tidak diketahui";
+              return `Lokasi di sekitar ${area} (${lat.toFixed(
+                4
+              )}, ${lng.toFixed(4)})`;
+            } catch {
+              return `Lokasi di sekitar (${lat.toFixed(4)}, ${lng.toFixed(4)})`;
+            }
+          };
+
+          marker.on("dragend", async () => {
             const position = marker.getLatLng();
-            const address = `Lokasi di sekitar ${position.lat.toFixed(
-              4
-            )}, ${position.lng.toFixed(4)}`;
+            const address = await getAddress(position.lat, position.lng);
             onLocationSelect(position.lat, position.lng, address);
           });
 
-          // Handle map click
-          map.on("click", (e) => {
+          map.on("click", async (e) => {
             const { lat, lng } = e.latlng;
             marker.setLatLng([lat, lng]);
-            const address = `Lokasi di sekitar ${lat.toFixed(4)}, ${lng.toFixed(
-              4
-            )}`;
+            const address = await getAddress(lat, lng);
             onLocationSelect(lat, lng, address);
           });
 
-          // Try to get user location
           map.locate({ setView: true, maxZoom: 16 });
-          map.on("locationfound", (e) => {
+          map.on("locationfound", async (e) => {
             marker.setLatLng(e.latlng);
-            const address = `Lokasi Anda di sekitar ${e.latlng.lat.toFixed(
-              4
-            )}, ${e.latlng.lng.toFixed(4)}`;
+            const address = await getAddress(e.latlng.lat, e.latlng.lng);
             onLocationSelect(e.latlng.lat, e.latlng.lng, address);
           });
 
-          // Force a resize after rendering
           setTimeout(() => {
             map.invalidateSize();
           }, 100);
 
           setIsMapInitialized(true);
 
-          // Define cleanup function
           cleanup = () => {
             if (map) {
-              // Remove map properly
               map.off();
               map.remove();
               mapInstanceRef.current = null;
@@ -127,7 +137,6 @@ const MapComponent = ({
 
     initializeMap();
 
-    // Return cleanup function
     return () => {
       if (cleanup) cleanup();
     };
@@ -137,12 +146,11 @@ const MapComponent = ({
     <div
       ref={mapContainerRef}
       style={{ height, width: "100%" }}
-      className="rounded border border-gray-300"
+      className="rounded border border-gray-300 z-10"
     />
   );
 };
 
-// Create dynamic component with SSR disabled
 const LocationPicker = dynamic(() => Promise.resolve(MapComponent), {
   ssr: false,
   loading: () => (

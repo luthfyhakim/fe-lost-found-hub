@@ -20,7 +20,7 @@ import {
 } from "@/components/ui/form";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { useForm } from "react-hook-form";
+import { useForm, type SubmitHandler } from "react-hook-form";
 import { z } from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useRouter } from "next/navigation";
@@ -42,7 +42,7 @@ import { Checkbox } from "@/components/ui/checkbox";
 import DashboardFooter from "@/components/layouts/dashboard-footer";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
-const formSchema = z.object({
+const FormSchema = z.object({
   itemName: z.string().min(3, { message: "Nama barang minimal 3 karakter" }),
   category: z.string().min(1, { message: "Pilih kategori barang" }),
   description: z.string().min(10, { message: "Deskripsi minimal 10 karakter" }),
@@ -58,7 +58,11 @@ const formSchema = z.object({
   contactEmail: z.string().email({ message: "Masukkan email valid" }),
   keepItem: z.boolean().default(false),
   dropLocation: z.string().optional(),
+  reward: z.string().optional(),
+  rewardAmount: z.string().optional(),
 });
+
+type FormValues = z.infer<typeof FormSchema>;
 
 export default function ReportLostPage() {
   const router = useRouter();
@@ -69,8 +73,8 @@ export default function ReportLostPage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [uploadedFile, setUploadedFile] = useState<File | null>(null);
 
-  const form = useForm<z.infer<typeof formSchema>>({
-    resolver: zodResolver(formSchema),
+  const form = useForm<FormValues>({
+    resolver: zodResolver(FormSchema),
     defaultValues: {
       itemName: "",
       category: "",
@@ -83,6 +87,8 @@ export default function ReportLostPage() {
       contactEmail: "",
       keepItem: false,
       dropLocation: "",
+      reward: "",
+      rewardAmount: "",
     },
   });
 
@@ -90,7 +96,7 @@ export default function ReportLostPage() {
     setUploadedFile(file);
   };
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
+  const onSubmit: SubmitHandler<FormValues> = (values) => {
     setIsSubmitting(true);
     console.log("Form submitted: ", values);
     console.log("Uploaded file:", uploadedFile);
@@ -99,7 +105,7 @@ export default function ReportLostPage() {
       setIsSubmitting(false);
       router.push("/dashboard?success=true");
     }, 1500);
-  }
+  };
 
   const handleLocationSelect = (lat: number, lng: number, address: string) => {
     form.setValue("coordinates", { lat, lng });
@@ -115,7 +121,7 @@ export default function ReportLostPage() {
         <div className="flex flex-col gap-6 max-w-3xl mx-auto">
           <div className="flex items-center gap-2">
             <Link href="/dashboard">
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="cursor-pointer">
                 <ArrowLeft className="h-4 w-4" />
                 <span className="sr-only">Back</span>
               </Button>
@@ -250,7 +256,7 @@ export default function ReportLostPage() {
                     <h3 className="text-lg font-medium">Lokasi Kehilangan</h3>
                     <FormField
                       control={form.control}
-                      name="localtion"
+                      name="location"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Alamat Lokasi</FormLabel>

@@ -114,7 +114,7 @@ export default function ReportFoundPage() {
         <div className="flex flex-col gap-6 max-w-3xl mx-auto">
           <div className="flex items-center gap-2">
             <Link href="/dashboard">
-              <Button variant="ghost" size="icon">
+              <Button variant="ghost" size="icon" className="cursor-pointer">
                 <ArrowLeft className="h-4 w-4" />
                 <span className="sr-only">Back</span>
               </Button>
@@ -249,7 +249,7 @@ export default function ReportFoundPage() {
                     <h3 className="text-lg font-medium">Lokasi Penemuan</h3>
                     <FormField
                       control={form.control}
-                      name="localtion"
+                      name="location"
                       render={({ field }) => (
                         <FormItem>
                           <FormLabel>Alamat Lokasi</FormLabel>

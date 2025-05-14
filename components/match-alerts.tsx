@@ -59,7 +59,7 @@ export default function MatchAlerts() {
                 <Badge variant="outline">{match.matchPercentage}% Match</Badge>
               </div>
               <Link href={`/match/${match.id}`}>
-                <Button variant="ghost" size="icon">
+                <Button variant="ghost" size="icon" className="cursor-pointer">
                   <ArrowRight className="h-4 w-4" />
                 </Button>
               </Link>
@@ -79,7 +79,7 @@ export default function MatchAlerts() {
 
               <div className="p-3 rounded-md bg-muted/50">
                 <div className="flex items-center gap-2">
-                  <Badge variant="default">Ditemukan</Badge>
+                  <Badge variant="success">Ditemukan</Badge>
                   <span className="font-medium">{match.lostItem.name}</span>
                 </div>
                 <div className="mt-1 text-sm text-muted-foreground">
@@ -90,8 +90,10 @@ export default function MatchAlerts() {
             </div>
 
             <div className="mt-3 flex gap-2">
-              <Button size="sm">Konfirmasi Match</Button>
-              <Button size="sm" variant="outline">
+              <Button size="sm" className="cursor-pointer">
+                Konfirmasi Match
+              </Button>
+              <Button size="sm" variant="outline" className="cursor-pointer">
                 Tolak
               </Button>
             </div>

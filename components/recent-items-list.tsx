@@ -96,12 +96,17 @@ export default function RecentItemsList({ type }: RecentItemsListProps) {
               <div className="flex items-center gap-2">
                 <h3 className="font-medium">{item.name}</h3>
                 <Badge
-                  variant={item.type == "lost" ? "destructive" : "default"}
+                  variant={item.type == "lost" ? "destructive" : "success"}
                 >
                   {item.type === "lost" ? "Hilang" : "Ditemukan"}
                 </Badge>
                 {item.status === "closed" && (
-                  <Badge variant="outline">Selesai</Badge>
+                  <Badge
+                    variant="outline"
+                    className="border-sky-600 text-sky-600"
+                  >
+                    Selesai
+                  </Badge>
                 )}
               </div>
               <div className="flex flex-col md:flex-row gap-1 md:gap-4 text-sm text-muted-foreground">
@@ -117,7 +122,7 @@ export default function RecentItemsList({ type }: RecentItemsListProps) {
             </div>
             <Link
               href={`/item/${item.type}/${item.id}`}
-              className="mt-2 md:mt-0 flex items-center text-sm text-primary hover:underline"
+              className="mt-2 md:mt-0 flex items-center text-sm text-primary hover:underline underline-offset-2"
             >
               Lihat Detail
               <ArrowRight className="ml-1 h-3 w-3" />
