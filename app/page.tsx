@@ -35,12 +35,12 @@ export default function Home() {
             </Link>
           </nav>
           <div className="flex gap-4">
-            <Link href="/dashboard">
+            <Link href="/auth/login">
               <Button className="cursor-pointer bg-sky-600 hover:bg-sky-700 text-white">
                 Masuk
               </Button>
             </Link>
-            <Link href="/">
+            <Link href="/auth/register">
               <Button
                 variant="outline"
                 className="cursor-pointer border-sky-600 text-sky-600 hover:border-sky-700 hover:text-sky-700"
