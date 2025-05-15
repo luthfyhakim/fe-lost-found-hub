@@ -148,6 +148,13 @@ export default function DashboardMap() {
               .addTo(map);
           });
 
+          L.circle([-6.2088, 106.8456], {
+            color: "rgba(59, 130, 246, 0.5)",
+            fillColor: "rgba(59, 130, 246, 0.1)",
+            fillOpacity: 0.5,
+            radius: 5000,
+          }).addTo(map);
+
           const style = document.createElement("style");
           style.textContent = `
             .lost-marker {
@@ -169,11 +176,5 @@ export default function DashboardMap() {
     initializeMap();
   }, [isMounted]);
 
-  return (
-    <div
-      ref={mapContainerRef}
-      style={{ width: "100%", height: "500px" }}
-      className="rounded-lg shadow-md z-10"
-    />
-  );
+  return <div ref={mapContainerRef} className="h-full w-full z-10" />;
 }
