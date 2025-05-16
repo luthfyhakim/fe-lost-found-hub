@@ -250,12 +250,9 @@ export default function LostItemDetailPage() {
                   {item.reward && (
                     <>
                       <Separator />
-                      <div className="space-y-2">
+                      <div className="space-y-1">
                         <p className="text-sm font-medium">Imbalan</p>
-                        <div className="flex items-center gap-2 text-sm">
-                          <CircleDollarSign className="h-5 w-5 text-muted-foreground" />
-                          <span>{item.rewardAmount}</span>
-                        </div>
+                        <span className="text-sm">{item.rewardAmount}</span>
                       </div>
                     </>
                   )}
