@@ -15,7 +15,7 @@ const MapComponent = ({
   height = "400px",
 }: LocationPickerProps) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null);
+  const mapInstanceRef = useRef<unknown>(null);
   const [isMapInitialized, setIsMapInitialized] = useState(false);
 
   const addLeafletCSS = () => {
