@@ -38,7 +38,6 @@ import { DatePicker } from "@/components/date-picker";
 import { Separator } from "@/components/ui/separator";
 import FileUploader from "@/components/file-uploader";
 import LocationPicker from "@/components/location-picker";
-import { Checkbox } from "@/components/ui/checkbox";
 import DashboardFooter from "@/components/layouts/dashboard-footer";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 
@@ -274,7 +273,7 @@ export default function ReportLostPage() {
                     <FormField
                       control={form.control}
                       name="coordinates"
-                      render={({ field }) => (
+                      render={() => (
                         <FormItem>
                           <FormLabel>Pilih Lokasi di Peta</FormLabel>
                           <FormControl>

@@ -267,7 +267,7 @@ export default function ReportFoundPage() {
                     <FormField
                       control={form.control}
                       name="coordinates"
-                      render={({ field }) => (
+                      render={() => (
                         <FormItem>
                           <FormLabel>Pilih Lokasi di Peta</FormLabel>
                           <FormControl>
