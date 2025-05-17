@@ -67,7 +67,6 @@ export default function RegisterPage() {
     setIsSubmitting(true);
     console.log(values);
 
-    // Simulate API call
     setTimeout(() => {
       setIsSubmitting(false);
       router.push("/auth/login?registered=true");

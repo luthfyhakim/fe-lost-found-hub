@@ -86,10 +86,10 @@ const passwordFormSchema = z
   });
 
 const notificationFormSchema = z.object({
-  emailNotifications: z.boolean().default(true),
-  matchAlerts: z.boolean().default(true),
-  statusUpdates: z.boolean().default(true),
-  marketingEmails: z.boolean().default(false),
+  emailNotifications: z.boolean(),
+  matchAlerts: z.boolean(),
+  statusUpdates: z.boolean(),
+  marketingEmails: z.boolean(),
 });
 
 export default function ProfilePage() {

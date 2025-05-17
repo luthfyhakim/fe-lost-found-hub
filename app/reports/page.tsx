@@ -36,6 +36,11 @@ import Link from "next/link";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 
+type DateRange = {
+  from: Date | undefined;
+  to?: Date | undefined;
+};
+
 const lostItems = [
   {
     id: 1,
@@ -155,7 +160,7 @@ export default function ReportsPage() {
   const [searchQuery, setSearchQuery] = useState("");
   const [category, setCategory] = useState("all");
   const [status, setStatus] = useState("all");
-  const [dateRange, setDateRange] = useState<{ from?: Date; to?: Date }>({});
+  const [dateRange, setDateRange] = useState<DateRange>({ from: undefined });
   const [currentPage, setCurrentPage] = useState(1);
   const [isFilterOpen, setIsFilterOpen] = useState(false);
   const [selectedItems, setSelectedItems] = useState<number[]>([]);
@@ -227,6 +232,10 @@ export default function ReportsPage() {
     } else {
       setSelectedItems(paginatedItems.map((item) => item.id));
     }
+  };
+
+  const handleDateRangeChange = (range: DateRange | undefined) => {
+    setDateRange(range || { from: undefined });
   };
 
   return (
@@ -316,29 +325,42 @@ export default function ReportsPage() {
                 </div>
 
                 {isFilterOpen && (
-                  <div className="grid gap-4 pt-2 md:grid-cols-2">
+                  <div className="grid gap-8 md:grid-cols-2">
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">
+                      <label className="text-sm font-medium mb-2 block">
                         Rentang Tanggal
                       </label>
                       <DateRangePicker
                         value={dateRange}
-                        onChange={setDateRange}
+                        onChange={handleDateRangeChange}
                         placeholder="Pilih rentang tanggal"
                       />
                     </div>
                     <div className="space-y-2">
-                      <label className="text-sm font-medium">
+                      <label className="text-sm font-medium mb-2 block">
                         Filter Tambahan
                       </label>
-                      <div className="grid grid-cols-2 gap-2">
+                      <div className="grid gap-2">
                         <div className="flex items-center space-x-2">
-                          <Checkbox id="reward" />
-                          <Label htmlFor="reward">Dengan Imbalan</Label>
+                          <Checkbox id="reward" className="cursor-pointer" />
+                          <Label
+                            htmlFor="reward"
+                            className="font-normal text-primary"
+                          >
+                            Dengan Imbalan
+                          </Label>
                         </div>
                         <div className="flex items-center space-x-2">
-                          <Checkbox id="with-image" />
-                          <Label htmlFor="with-image">Dengan Foto</Label>
+                          <Checkbox
+                            id="with-image"
+                            className="cursor-pointer"
+                          />
+                          <Label
+                            htmlFor="with-image"
+                            className="font-normal text-primary"
+                          >
+                            Dengan Foto
+                          </Label>
                         </div>
                       </div>
                     </div>
@@ -565,7 +587,6 @@ export default function ReportsPage() {
                     </div>
                   )}
 
-                  {/* Bulk Actions */}
                   {selectedItems.length > 0 && (
                     <div className="flex items-center justify-between mt-4 p-2 bg-muted rounded-md">
                       <div className="text-sm">

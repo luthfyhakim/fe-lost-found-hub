@@ -18,16 +18,6 @@ const MapComponent = ({
   const mapInstanceRef = useRef<unknown>(null);
   const [isMapInitialized, setIsMapInitialized] = useState(false);
 
-  const addLeafletCSS = () => {
-    if (document.getElementById("leaflet-css")) return;
-
-    const link = document.createElement("link");
-    link.id = "leaflet-css";
-    link.rel = "stylesheet";
-    link.href = "https://unpkg.com/leaflet@1.9.4/dist/leaflet.css";
-    document.head.appendChild(link);
-  };
-
   useEffect(() => {
     if (
       typeof window === "undefined" ||
@@ -43,19 +33,6 @@ const MapComponent = ({
       try {
         const L = await import("leaflet");
 
-        addLeafletCSS();
-
-        delete L.Icon.Default.prototype._getIconUrl;
-
-        L.Icon.Default.mergeOptions({
-          iconRetinaUrl:
-            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon-2x.png",
-          iconUrl:
-            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-icon.png",
-          shadowUrl:
-            "https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.9.4/images/marker-shadow.png",
-        });
-
         if (!mapInstanceRef.current && mapContainerRef.current) {
           const map = L.map(mapContainerRef.current).setView(
             [initialPosition.lat, initialPosition.lng],
@@ -70,7 +47,22 @@ const MapComponent = ({
             maxZoom: 19,
           }).addTo(map);
 
+          const icon = new L.Icon({
+            iconUrl:
+              "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+            iconRetinaUrl:
+              "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+            shadowUrl:
+              "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+            iconSize: [25, 41],
+            iconAnchor: [12, 41],
+            popupAnchor: [1, -34],
+            shadowSize: [41, 41],
+            className: "icon-marker",
+          });
+
           const marker = L.marker([initialPosition.lat, initialPosition.lng], {
+            icon: icon,
             draggable: true,
           }).addTo(map);
 

@@ -31,7 +31,7 @@ import { z } from "zod";
 const formSchema = z.object({
   email: z.string().email({ message: "Masukkan email yang valid" }),
   password: z.string().min(8, { message: "Password minimal 8 karakter" }),
-  rememberMe: z.boolean().default(false),
+  rememberMe: z.boolean(),
 });
 
 export default function LoginPage() {

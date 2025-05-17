@@ -22,15 +22,6 @@ export default function MatchMap({ lostItem, foundItem }: MatchMapProps) {
   const mapContainerRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    delete L.Icon.Default.prototype._getIconUrl;
-    L.Icon.Default.mergeOptions({
-      iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-      iconRetinaUrl:
-        "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
-      shadowUrl:
-        "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
-    });
-
     if (mapContainerRef.current && !mapRef.current) {
       const lostLatLng = L.latLng(
         lostItem.coordinates.lat,

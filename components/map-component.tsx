@@ -25,17 +25,6 @@ export default function MapComponent({
   const [isMapInitialized, setIsMapInitialized] = useState(false);
 
   useEffect(() => {
-    delete L.Icon.Default.prototype._getIconUrl;
-    L.Icon.Default.mergeOptions({
-      iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
-      iconRetinaUrl:
-        "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
-      shadowUrl:
-        "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
-    });
-  }, []);
-
-  useEffect(() => {
     let map: L.Map | null = null;
 
     if (mapContainerRef.current) {
@@ -47,15 +36,28 @@ export default function MapComponent({
         maxZoom: 19,
       }).addTo(map);
 
-      const jakartaMarker = L.marker([-6.2088, 106.8456])
+      const icon = new L.Icon({
+        iconUrl: "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon.png",
+        iconRetinaUrl:
+          "https://unpkg.com/leaflet@1.7.1/dist/images/marker-icon-2x.png",
+        shadowUrl:
+          "https://unpkg.com/leaflet@1.7.1/dist/images/marker-shadow.png",
+        iconSize: [25, 41],
+        iconAnchor: [12, 41],
+        popupAnchor: [1, -34],
+        shadowSize: [41, 41],
+        className: "icon-marker",
+      });
+
+      const jakartaMarker = L.marker([-6.2088, 106.8456], { icon: icon })
         .bindPopup("<b>Jakarta</b><br>Capital city of Indonesia")
         .addTo(map);
 
-      const baliMarker = L.marker([-8.3405, 115.092])
+      const baliMarker = L.marker([-8.3405, 115.092], { icon: icon })
         .bindPopup("<b>Bali</b><br>Popular tourist destination")
         .addTo(map);
 
-      const yogyakartaMarker = L.marker([-7.7956, 110.3695])
+      const yogyakartaMarker = L.marker([-7.7956, 110.3695], { icon: icon })
         .bindPopup("<b>Yogyakarta</b><br>Cultural center of Java")
         .addTo(map);
 

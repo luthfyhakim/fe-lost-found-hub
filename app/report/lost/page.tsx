@@ -55,7 +55,7 @@ const FormSchema = z.object({
   contactName: z.string().min(3, { message: "Masukkan nama kontak" }),
   contactPhone: z.string().min(10, { message: "Masukkan nomor telepon valid" }),
   contactEmail: z.string().email({ message: "Masukkan email valid" }),
-  keepItem: z.boolean().default(false),
+  keepItem: z.boolean(),
   dropLocation: z.string().optional(),
   reward: z.string().optional(),
   rewardAmount: z.string().optional(),
