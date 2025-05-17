@@ -21,7 +21,6 @@ import {
   Phone,
   Mail,
   Share2,
-  CircleDollarSign,
 } from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import ItemLocationMap from "@/components/item-location-map";

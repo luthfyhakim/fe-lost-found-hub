@@ -177,7 +177,6 @@ const matchesData = [
 
 export default function MatchDetailPage() {
   const params = useParams();
-  const router = useRouter();
   const { id } = params;
   const [message, setMessage] = useState("");
   const [messages, setMessages] = useState<any[]>([]);
